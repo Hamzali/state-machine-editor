@@ -89,7 +89,7 @@ export default class StateMachineEditor extends HTMLElement {
   set height(newHeight) {
     if (newHeight == null) return;
     this.setHeight(Number(newHeight));
-    this.setAttribute('width', newHeight);
+    this.setAttribute('height', newHeight);
   }
 
   static get observedAttributes(): string[] {
