@@ -1,0 +1,39 @@
+{
+  "name": "state-machine-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demo": "parcel examples/index.html",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Hamza Ali Taş",
+  "license": "ISC",
+  "types": "build/index.d.ts",
+  "devDependencies": {
+    "@types/color": "^3.0.1",
+    "@types/uuid": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "parcel": "^1.12.4",
+    "prettier": "^2.0.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/color-hash": "^1.0.0",
+    "@types/fabric": "^3.6.2",
+    "color-hash": "^1.0.3",
+    "fabric": "^3.6.3",
+    "uuid": "^7.0.2"
+  }
+}

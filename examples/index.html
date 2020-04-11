@@ -1,0 +1,121 @@
+<html>
+  <head>
+    <title>SME DEMO</title>
+    <script src="../src/index.ts"></script>
+  </head>
+  <body>
+    <div id="last_click_pos_container">X: 0, Y: 0</div>
+    <div id="selected_state"></div>
+    <input id="state_name_input" placeholder="state name..." />
+    <button id="add_state_btn">add state</button>
+    <br />
+    <input id="event_name_input" placeholder="event name..." />
+    <button id="start_transition_btn">start transition</button>
+    <button id="cancel_transition_btn">cancel</button>
+    <br />
+    <button id="delete_btn">delete</button>
+    <state-machine-editor id="smeditor" width="500" height="500"></state-machine-editor>
+    <script>
+      const sm = {
+        initialState: 'idle',
+        rules: {
+          idle: {
+            metadata: { x: 100, y: 100 },
+            events: {
+              gas: 'moving',
+              break: 'idle',
+            },
+          },
+          moving: {
+            metadata: { x: 200, y: 200 },
+            events: { gas: 'moving', break: 'idle' },
+          },
+        },
+      };
+      const clickPosDiv = document.getElementById('last_click_pos_container');
+      const addStateBtn = document.getElementById('add_state_btn');
+      const stateNameInput = document.getElementById('state_name_input');
+      addStateBtn.addEventListener('click', () => {
+        if (stateNameInput.value.length > 0) {
+          smEditor.addState(stateNameInput.value, state.lastClickPos.x, state.lastClickPos.y);
+        }
+      });
+
+      const eventNameInput = document.getElementById('event_name_input');
+      const selectedStateDiv = document.getElementById('selected_state');
+      const startTransitionBtn = document.getElementById('start_transition_btn');
+      startTransitionBtn.addEventListener('click', () => {
+        if (state.selectedState && eventNameInput.value.length > 0) {
+          smEditor.startAddTransition(
+            eventNameInput.value,
+            state.selectedState.name,
+            state.selectedState.x,
+            state.selectedState.y
+          );
+        }
+      });
+
+      const deleteBtn = document.getElementById('delete_btn');
+      deleteBtn.addEventListener('click', () => {
+        console.log('delete', state.selectedState);
+        smEditor.deleteState(state.selectedState.name);
+      });
+      const cancelTransitionBtn = document.getElementById('cancel_transition_btn');
+      cancelTransitionBtn.addEventListener('click', () => {
+        smEditor.stopAddTransition();
+      });
+
+      setInterval(() => {
+        smEditor.currentState = ['moving', 'idle'][Math.round(Math.random() * 2)];
+      }, 3000);
+
+      const state = {
+        lastClickPos: { x: 0, y: 0 },
+        selectedState: null,
+      };
+      const smEditor = document.getElementById('smeditor');
+
+      smEditor.stateMachine = sm;
+      smEditor.setCurrentState('moving');
+      // state
+      smEditor.addEventListener('state:rightclick', (event) =>
+        console.log('state right click', event)
+      );
+      smEditor.addEventListener('state:click', (event) => {
+        console.log('state click', event);
+        state.selectedState = event.detail.state;
+        selectedStateDiv.innerText = event.detail.state.name;
+      });
+      smEditor.addEventListener('state:doubleclick', (event) =>
+        console.log('state double click', event)
+      );
+      // transition
+      smEditor.addEventListener('transition:rightclick', (event) =>
+        console.log('transition right click', event)
+      );
+      smEditor.addEventListener('transition:click', (event) =>
+        console.log('transition click', event)
+      );
+      smEditor.addEventListener('transition:doubleclick', (event) =>
+        console.log('transition double click', event)
+      );
+      // canvas events
+      smEditor.addEventListener('canvas:rightclick', (event) =>
+        console.log('canvas right click', event)
+      );
+      smEditor.addEventListener('canvas:click', (event) => {
+        console.log('canvas click', event);
+        const { x, y } = event.detail.canvas;
+        //
+        state.lastClickPos = { x, y };
+        clickPosDiv.innerText = `X: ${x}, Y: ${y}`;
+      });
+      smEditor.addEventListener('canvas:doubleclick', (event) =>
+        console.log('canvas double click', event)
+      );
+      smEditor.addEventListener('statemachine:change', (event) =>
+        console.log('state machine change', event.detail)
+      );
+    </script>
+  </body>
+</html>
